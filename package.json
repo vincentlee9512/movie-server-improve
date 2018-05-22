@@ -1,0 +1,20 @@
+{
+  "name": "node-webserver",
+  "version": "0.0.0",
+  "description": "Web Server using Node JS",
+  "author": {
+    "name": "Wenxuan Li",
+    "email": "li000053@stthomas.edu"
+  },
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vincentlee9512/movie-wiki-server.git"
+  },
+  "dependencies": {
+    "express": "latest",
+    "express-generator": "^4.16.0",
+    "multiparty": "latest",
+    "querystring": "latest"
+  }
+}
