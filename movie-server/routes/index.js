@@ -1,5 +1,10 @@
 let express = require('express');
 let router = express.Router();
+let sqlite3 = require('sqlite3').verbose();
+
+//function from myself
+let promises_module = require('../self_wrote_module/promise');
+let format_module = require('../self_wrote_module/format_func');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -29,7 +34,19 @@ router.post('/submit', function(req, res, next){
 
 router.get('/search/:content', function (req, res, next) {
   let key_words = req.params.content;
-  console.log(key_words);
+
+  let title_sql = "SELECT * FROM Titles WHERE primary_title LIKE $searchTerm";
+  let people_sql = "SELECT * FROM Names WHERE primary_name LIKE $searchTerm";
+
+  let searchTerm = key_words.replace(/(\(|\)|\;)/g, '');
+  searchTerm = '%' + searchTerm.replace(/\*/g, '%') + '%';
+
+  let title_db_promise = promises_module.db_promise_like(title_sql, searchTerm);
+  let people_db_promise = promises_module.db_promise_like(people_sql, searchTerm);
+
+  Promise.all([title_db_promise, people_db_promise]).then((data_arr) => {
+    console.log(data_arr);
+  });
 
   res.render('search', {output: key_words});
 });
