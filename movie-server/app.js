@@ -1,14 +1,20 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var hbs = require('express-handlebars');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+let hbs = require('express-handlebars');
+let expressValidator = require('express-validator');
+let expressSession = require('express-session');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+//function from professor Thomas Marrinan
+//let poster_func = require('/movie-server/public/javascripts/imdb_poster.js');
 
-var app = express();
+let domain_url = "http://www.vincesmoviewiki.com";
+
+let indexRouter = require('./routes/index');
+
+let app = express();
 
 // view engine setup
 app.engine('hbs',
@@ -24,11 +30,12 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressSession({secret: 'vincent', saveUninitialized: false, resave: false}));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
