@@ -7,10 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ title }}</title>
 
-    <link href="/movie-server/public/stylesheets/style.css" type="text/css" rel="stylesheet">
-    <link href="/movie-server/public/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="/stylesheets/style.css" type="text/css" rel="stylesheet">
+    <link href="/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet">
 </head>
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-warning">
         <a class="navbar-brand" href="/">Movie Wiki</a>
 
@@ -21,11 +22,15 @@
         </div>
     </nav>
 
-    {{{ body }}}
+    <div class="container">
 
-    <script src="/movie-server/public/javascripts/popper.min.js"></script>
-    <script src="/movie-server/public/javascripts/jquery.min.js"></script>
-    <script src="/movie-server/public/javascripts/bootstrap.min.js"></script>
-    <script src="/movie-server/public/javascripts/angular.min.js"></script>
+        {{{ body }}}
+
+    </div>
+
+    <script src="/javascripts/popper.min.js"></script>
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/angular.min.js"></script>
 </body>
 </html>

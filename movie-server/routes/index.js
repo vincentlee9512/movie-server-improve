@@ -15,11 +15,23 @@ router.post('/submit', function(req, res, next){
   if(errors){
     req.session.errors = errors;
     req.session.success = false;
+    res.redirect('/')
   }else{
     req.session.success = true;
+
+    let content = req.body.content;
+
+    res.redirect('/search/' + content);
   }
 
-  res.redirect('/');
+
+});
+
+router.get('/search/:content', function (req, res, next) {
+  let key_words = req.params.content;
+  console.log(key_words);
+
+  res.render('search', {output: key_words});
 });
 
 module.exports = router;
