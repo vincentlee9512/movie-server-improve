@@ -1,4 +1,6 @@
 module.exports = {
+
+    //formats the title search result
     //returns html code
     title_table: function (sql_result) {
         let type_list = [
@@ -56,6 +58,7 @@ module.exports = {
         return table_html_code;
     },
 
+    //formats the people search result
     //returns html code
     people_table: function (sql_result) {
         let table_html_code = "";
@@ -121,6 +124,7 @@ module.exports = {
         return table_html_code;
     },
 
+    //formats the single title page
     //returns object with html_code, directors_sql, writers_sql
     title_individual: function (sql_result) {
         let returnObj = {};
@@ -181,7 +185,7 @@ module.exports = {
         html_code += "<h5>Casting (order by top billed cast): </h5><ol id='cast_list'>";
 
         for (let i = 0; i < sql_result.length; i++) {
-            html_code += "<li><a href=\"/individual/ " + sql_result[i].nconst +
+            html_code += "<li><a href=\"/individual/" + sql_result[i].nconst +
                 "\">" + sql_result[i].primary_name + "</a></li>";
         }
 
@@ -193,20 +197,88 @@ module.exports = {
 
         //dont forget poster here
 
+        html_code +='</div>' + '</div>';
+
         returnObj.html_code = html_code;
         returnObj.directors_sql = directors_sql;
         returnObj.writers_sql = writers_sql;
         return returnObj;
     },
 
+    //formats the single person page
+    //returns object with html_code and titles_name_sql
+    people_individual: function (sql_result){
+        let return_obj = {};
+
+        let html_code = "<h2>" + sql_result.primary_name + '' +
+            '<span onclick="editing_person()">&nbsp;&nbsp;&nbsp;&nbsp;edit</span></h2>';
+
+        let death_year;
+        if (sql_result.death_year === null) {
+            death_year = 'present';
+        } else {
+            death_year = sql_result.death_year;
+        }
+
+        console.log(sql_result.primary_name + ": " + sql_result.known_for_titles)
+
+        let known_titles_arr = sql_result.known_for_titles.split(',');
+        let titles_name_sql = "SELECT Titles.primary_title, Titles.tconst From Titles WHERE ";
+        for (let i = 0; i < known_titles_arr.length; i++) {
+            titles_name_sql += "tconst = \"" + known_titles_arr[i] + "\" ";
+
+            if (i < known_titles_arr.length - 1) {
+                titles_name_sql += "OR ";
+            }
+        }
+
+        html_code += '<div class="row">' +
+        '<div class="col-4">' +
+        // info here
+        '<p id="nconst_hidden" hidden>' + sql_result.nconst + '</p>' +
+        '<p>Birth Year: ' + '<span id="person_birth_year">' + sql_result.birth_year + '</span></p>' +
+        '<p>Death Year: ' + '<span id="person_death_year">' + death_year + '</span></p>' +
+        '<p>Professions: ' + '<span id="person_profession">' + sql_result.primary_profession + '</span></p>' +
+        '</div><div class="col-4"><h5>Known For Titles</h5>' +
+        '***known_titles***' +
+        '</div> ' +
+        '<div class="col-4" ng-controller=\"PosterController\">';
+
+        //poster here
+
+        html_code +='</div>' + '</div>';
+
+        return_obj.html_code = html_code;
+        return_obj.titles_name_sql = titles_name_sql;
+
+        return return_obj;
+    },
+
+    //formats the list of people's name in titles' page
     //returns html code
     people_list: function(sql_result){
         var html_code = "<ul style='list-style-type: none'>";
 
         for (var i = 0; i < sql_result.length; i++) {
             html_code += "<li><a href=\"/individual/" +
-                sql_result[i].nconst + "\" >" +
+                sql_result[i].nconst + "\">" +
                 sql_result[i].primary_name + "</a></li>";
+        }
+
+        html_code += "</ul>";
+
+        return html_code;
+    },
+
+    //formats the list of titles' name in people's page
+    //returns html code
+    title_list: function (sql_result) {
+        var html_code = "<ul style='list-style-type: none'>";
+
+        for (var i = 0; i < sql_result.length; i++) {
+            html_code += "<li><a href=\"/individual/" +
+                sql_result[i].tconst + "\">" +
+                sql_result[i].primary_title + "</a></li>";
         }
 
         html_code += "</ul>";

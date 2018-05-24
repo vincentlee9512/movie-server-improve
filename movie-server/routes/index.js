@@ -56,7 +56,7 @@ router.get('/search/:content', function (req, res, next) {
 });
 
 router.get('/individual/:uid', function (req, res, next) {
-  let uid = req.params.uid;
+  let uid = req.params.uid.split(' ').join('');
   let sql;
 
   //conditional statement
@@ -72,7 +72,9 @@ router.get('/individual/:uid', function (req, res, next) {
         " AND Principals.nconst = Names.nconst " +
         " ORDER BY Principals.ordering;";
   }else if (uid.substring(0,2) === "nm"){
-      sql = "SELECT * FROM Names WHERE nconst = \"" + uid +"\"";
+    sql = "SELECT * FROM Names WHERE nconst = \"" + uid +"\"";
+  }else{
+    res.redirect('/');
   }
 
   var db_p = promises_module.db_promise(sql);
@@ -103,7 +105,16 @@ router.get('/individual/:uid', function (req, res, next) {
           res.render('individual', { html_code: html_code});
         });
       }else{
-        returnObj = {};
+        returnObj = format_module.people_individual(data[0]);
+        html_code = returnObj.html_code;
+
+        let known_title_promise = promises_module.db_promise(returnObj.titles_name_sql);
+
+        known_title_promise.then((data) => {
+            var title_list = format_module.title_list(data);
+            html_code = html_code.replace('***known_titles***', title_list);
+            res.render('individual', { html_code: html_code});
+        });
       }
 
     }
