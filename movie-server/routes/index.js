@@ -8,6 +8,7 @@ let format_module = require('../self_wrote_module/format_func');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  req.session.success = null;
   res.render('index', { title: 'Movie Wiki', success: req.session.success, errors: req.session.errors });
   req.session.errors = null;
   req.session.success = null;
@@ -45,10 +46,13 @@ router.get('/search/:content', function (req, res, next) {
   let people_db_promise = promises_module.db_promise_like(people_sql, searchTerm);
 
   Promise.all([title_db_promise, people_db_promise]).then((data_arr) => {
-    console.log(data_arr);
+    let title_table = format_module.title_table(data_arr[0]);
+    let people_table = format_module.people_table(data_arr[1]);
+
+    res.render('search', { keyWord: key_words ,title_result: title_table, people_result: people_table});
   });
 
-  res.render('search', {output: key_words});
+
 });
 
 module.exports = router;
