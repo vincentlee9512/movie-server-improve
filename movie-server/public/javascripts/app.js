@@ -1,4 +1,3 @@
-let main_page = "http://www.vincesmoviewiki.com";
 // Instead:
 // - make a "get" in my server for /poster/:id
 // - call this get from the js (I can find the id info from the URL - window.location)

@@ -95,7 +95,7 @@ router.get('/individual/:uid', function (req, res, next) {
         html_code = returnObj.html_code;
 
         let directors_db_p = promises_module.db_promise(returnObj.directors_sql);
-        let writers_db_p = promises_module.db_promise(returnObj.directors_sql);
+        let writers_db_p = promises_module.db_promise(returnObj.writers_sql);
 
         Promise.all([directors_db_p, writers_db_p]).then((data_arr) => {
 

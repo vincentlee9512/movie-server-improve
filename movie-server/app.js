@@ -10,6 +10,7 @@ let expressSession = require('express-session');
 let domain_url = "http://www.vincesmoviewiki.com";
 
 let indexRouter = require('./routes/index');
+let aboutRouter = require('./routes/about');
 
 let app = express();
 
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressSession({secret: 'vincent', saveUninitialized: false, resave: false}));
 
 app.use('/', indexRouter);
+app.use('/about', aboutRouter);
 
 
 
