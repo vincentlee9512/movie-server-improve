@@ -198,6 +198,9 @@ module.exports = {
         html_code += "<div class=\"col-3\"><h5>Writers: ***writers***</h5></div>";
 
         //dont forget poster here
+        html_code += '<div class=\"col-3\" ng-controller=\"PosterController\">' +
+            //movie picture here
+            '<img ng-src=\"{{imageSrc}}\" ng-init=\"imageSrc = \'./img/poster-placeholder.jpg\'\">' + '</div>';
 
         html_code +='</div>' + '</div>' + '</div>';
 

@@ -6,6 +6,9 @@ let sqlite3 = require('sqlite3').verbose();
 let promises_module = require('../self_wrote_module/promise');
 let format_module = require('../self_wrote_module/format_func');
 
+//function from professor Thomas Marrinan
+let poster = require('../self_wrote_module/imdb_poster');
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   req.session.success = null;
@@ -145,6 +148,47 @@ router.post('/updateTitle', function (req, res, next) {
   update_promise.then((data) => {
     res.redirect('/individual/' + req.body.tconst);
   })
+});
+
+router.get('/poster', (req, res) => {
+
+  //Emily was in charge of this part
+
+  if (req.query.nconst) {
+      poster.GetPosterFromNameId(req.query.nconst, (err, data) => {
+          if (err) {
+              console.log(err);
+              res.writeHead(404, {
+                  'Content-Type': 'text/html'
+              });
+              res.write('Uh oh - could not find file. Or This movie or person is delete from the database.<br/><a href=\"'+ main_page +'\">click here to go back to main page</a>');
+              res.end();
+          } else {
+              res.writeHead(200, {
+                  'Content': 'text/plain'
+              });
+              res.write(path.join(data.host, data.path));
+              res.end();
+          }
+      });
+  } else if (req.query.tconst) {
+      poster.GetPosterFromTitleId(req.query.tconst, (err, data) => {
+          if (err) {
+              console.log(err);
+              res.writeHead(404, {
+                  'Content-Type': 'text/html'
+              });
+              res.write('Uh oh - could not find file. Or This movie or person is delete from the database.<br/><a href=\"'+ main_page +'\">click here to go back to main page</a>');
+              res.end();
+          } else {
+              res.writeHead(200, {
+                  'Content': 'text/plain'
+              });
+              res.write(path.join(data.host, data.path));
+              res.end();
+          }
+      });
+  }
 });
 
 module.exports = router;

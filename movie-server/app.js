@@ -7,9 +7,6 @@ let hbs = require('express-handlebars');
 let expressValidator = require('express-validator');
 let expressSession = require('express-session');
 
-//function from professor Thomas Marrinan
-//let poster_func = require('/movie-server/public/javascripts/imdb_poster.js');
-
 let domain_url = "http://www.vincesmoviewiki.com";
 
 let indexRouter = require('./routes/index');
