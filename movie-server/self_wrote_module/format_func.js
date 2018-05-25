@@ -134,7 +134,9 @@ module.exports = {
         let writers_arr = [];
         let directors_arr =[];
 
-        let html_code = '<h2>' + sql_result[0].primary_title + '' +
+        let html_code = '<div id="table">';
+
+        html_code += '<h2>' + sql_result[0].primary_title + '' +
             '<span onclick="editing_movie()">&nbsp;&nbsp;&nbsp;&nbsp;edit</span></h2>';
 
         let end_year;
@@ -197,7 +199,7 @@ module.exports = {
 
         //dont forget poster here
 
-        html_code +='</div>' + '</div>';
+        html_code +='</div>' + '</div>' + '</div>';
 
         returnObj.html_code = html_code;
         returnObj.directors_sql = directors_sql;
@@ -210,7 +212,9 @@ module.exports = {
     people_individual: function (sql_result){
         let return_obj = {};
 
-        let html_code = "<h2>" + sql_result.primary_name + '' +
+        let html_code = "<div id='table'>";
+
+        html_code += "<h2>" + sql_result.primary_name + '' +
             '<span onclick="editing_person()">&nbsp;&nbsp;&nbsp;&nbsp;edit</span></h2>';
 
         let death_year;
@@ -219,8 +223,6 @@ module.exports = {
         } else {
             death_year = sql_result.death_year;
         }
-
-        console.log(sql_result.primary_name + ": " + sql_result.known_for_titles)
 
         let known_titles_arr = sql_result.known_for_titles.split(',');
         let titles_name_sql = "SELECT Titles.primary_title, Titles.tconst From Titles WHERE ";
@@ -246,7 +248,7 @@ module.exports = {
 
         //poster here
 
-        html_code +='</div>' + '</div>';
+        html_code +='</div>' + '</div>' + '</div>';
 
         return_obj.html_code = html_code;
         return_obj.titles_name_sql = titles_name_sql;

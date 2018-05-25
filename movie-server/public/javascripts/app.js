@@ -1,4 +1,3 @@
-var port = 8011;
 let main_page = "http://www.vincesmoviewiki.com";
 // Instead:
 // - make a "get" in my server for /poster/:id
@@ -46,7 +45,7 @@ function editing_movie() {
     var genres_arr = movie_genres.split(',');
 
     var replace_element = "" +
-        "<form class='row' action=\"/updateMovie\" enctype=\"multipart/form-data\" method=\"POST\">" +
+        "<form class='row' action=\"/updateTitle\" method=\"POST\">" +
         "<input hidden name='tconst' value=\'"+ movie_tconst +"\'>" +
         "<div class='col-4' >"+
         "<h3>Movie Type</h3>" +
@@ -93,16 +92,10 @@ function editing_movie() {
 
         "</div>" +
 
-
         "<div class='col-3'>" +
-        "<h3>Reorder top billed cast</h3>" +
-
-        "</div> " +
-
-        "<div class='col-1'>" +
         "<input type='submit' class=\"btn btn-primary col-12\" value='update'><br/>" +
         "<input type='reset' class=\"btn btn-danger col-12\" value='reset'><br/>" +
-        "<a href=\""+ main_page +"/individual?tconst=" + movie_tconst + "\" class=\"btn btn-dark col-12\">back</a>  " +
+        "<a href=\"/individual/" + movie_tconst + "\" class=\"btn btn-dark col-12\">back</a>  " +
         "</div> " +
 
         "</form>" +
@@ -129,13 +122,8 @@ function editing_person(){
 
     var profession_arr = person_profession.split(',');
 
-    console.log(person_nconst);
-    console.log(person_birth_year);
-    console.log(person_death_year);
-
-
     var replace_element = "" +
-        "<form action=\"/updatePerson\" enctype=\"multipart/form-data\" method=\"POST\">" +
+        "<form action=\"/updatePerson\" method=\"POST\">" +
         "<input hidden name='nconst' value=\'"+ person_nconst +"\'>" +
         "<h4>Birth Year: (please enter number for years or \"present\")</h4>" +
         "<input type='text' name='birth_year' value='"+ person_birth_year +"'>" +
@@ -183,7 +171,7 @@ function editing_person(){
 
         "<input type='submit' class=\"btn btn-primary col-2\" value='update'>" +
         "<input type='reset' class=\"btn btn-danger col-2\" value='reset'>" +
-        "<a href=\'"+ main_page +"/individual?nconst=" + person_nconst + "\'" + " class=\"btn btn-dark col-2\">back</a>  " +
+        "<a href=\'/individual/" + person_nconst + "\'" + " class=\"btn btn-dark col-2\">back</a>  " +
         "</form>" +
         "<script>" +
         "var limit = 3;\n" +

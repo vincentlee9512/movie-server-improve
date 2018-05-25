@@ -124,4 +124,27 @@ router.get('/individual/:uid', function (req, res, next) {
 
 });
 
+router.post('/updatePerson', function (req, res, next) {
+  let update_sql = "UPDATE Names Set birth_year=" + req.body.birth_year +
+      ", death_year=\'" + req.body.death_year + "\', primary_profession=\'" + req.body.profession + "\' WHERE nconst=\'" + req.body.nconst + "\'";
+
+  let update_promise = promises_module.db_promise(update_sql);
+
+  update_promise.then((data) => {
+    res.redirect('/individual/' + req.body.nconst);
+  });
+
+});
+
+router.post('/updateTitle', function (req, res, next) {
+  let update_sql = "UPDATE Titles Set title_type=\'" +
+      req.body.type + "\', genres=\'" + req.body.genres + "\' WHERE tconst=\'" + req.body.tconst + "\'";
+
+  let update_promise = promises_module.db_promise(update_sql);
+
+  update_promise.then((data) => {
+    res.redirect('/individual/' + req.body.tconst);
+  })
+});
+
 module.exports = router;
