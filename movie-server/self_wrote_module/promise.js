@@ -1,4 +1,8 @@
 let sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+
+//function from professor Thomas Marrinan
+let poster = require('../self_wrote_module/imdb_poster');
 
 module.exports = {
     form_promise: function form_promise(form, req){
@@ -47,5 +51,28 @@ module.exports = {
             });
             db.close();
         });
+    },
+    poster_promise: function (uid){
+        if(uid.substring(0,2) === "tt"){
+            return new Promise((resolve, reject) => {
+                poster.GetPosterFromTitleId(uid, (err, data) => {
+                    if(err){
+                        reject(err);
+                    }else{
+                        resolve("http://" + path.join(data.host, data.path));
+                    }
+                })
+            })
+        }else if(uid.substring(0,2) === "nm"){
+            return new Promise((resolve, reject) => {
+                poster.GetPosterFromNameId(uid, (err, data) => {
+                    if(err){
+                        reject(err);
+                    }else{
+                        resolve("http://" + path.join(data.host, data.path));
+                    }
+                })
+            })
+        }
     }
 };

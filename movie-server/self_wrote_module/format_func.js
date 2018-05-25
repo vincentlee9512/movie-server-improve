@@ -198,9 +198,13 @@ module.exports = {
         html_code += "<div class=\"col-3\"><h5>Writers: ***writers***</h5></div>";
 
         //dont forget poster here
+        html_code += "<div class=\"col-3\">" +
+            "<img src='***poster_url***'>" +
+            "</div>"
 
         html_code +='</div>' + '</div>' + '</div>';
 
+        returnObj.uid = sql_result[0].tconst;
         returnObj.html_code = html_code;
         returnObj.directors_sql = directors_sql;
         returnObj.writers_sql = writers_sql;
@@ -247,9 +251,13 @@ module.exports = {
         '<div class="col-4" ng-controller=\"PosterController\">';
 
         //poster here
+        html_code += '<div class="col-4">' +
+            '<img src="***poster_url***"' +
+            '</div>';
 
         html_code +='</div>' + '</div>' + '</div>';
 
+        return_obj.uid = sql_result.nconst;
         return_obj.html_code = html_code;
         return_obj.titles_name_sql = titles_name_sql;
 

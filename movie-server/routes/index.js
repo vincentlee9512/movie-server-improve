@@ -85,7 +85,7 @@ router.get('/individual/:uid', function (req, res, next) {
   db_p.then( (data) => {
 
     if(data.length === 0){
-      res.render('individual', { html_code: 'no information for this movie'});
+      res.render('individual', { html_code: 'no information for this title/person'});
     }else{
       let html_code = "";
       let returnObj = {};
@@ -96,15 +96,16 @@ router.get('/individual/:uid', function (req, res, next) {
 
         let directors_db_p = promises_module.db_promise(returnObj.directors_sql);
         let writers_db_p = promises_module.db_promise(returnObj.writers_sql);
+        let poster_p = promises_module.poster_promise(returnObj.uid);
 
-        Promise.all([directors_db_p, writers_db_p]).then((data_arr) => {
+        Promise.all([directors_db_p, writers_db_p, poster_p]).then((data_arr) => {
 
           let directors_list = format_module.people_list(data_arr[0]);
           let writers_list = format_module.people_list(data_arr[1]);
 
           html_code = html_code.replace('***directors***', directors_list);
           html_code = html_code.replace('***writers***', writers_list);
-
+          html_code = html_code.replace('***poster_url***', data_arr[2]);
           res.render('individual', { html_code: html_code});
         });
       }else{
@@ -112,12 +113,16 @@ router.get('/individual/:uid', function (req, res, next) {
         html_code = returnObj.html_code;
 
         let known_title_promise = promises_module.db_promise(returnObj.titles_name_sql);
+        let poster_p = promises_module.poster_promise(returnObj.uid);
 
-        known_title_promise.then((data) => {
-            var title_list = format_module.title_list(data);
-            html_code = html_code.replace('***known_titles***', title_list);
-            res.render('individual', { html_code: html_code});
+        Promise.all([known_title_promise, poster_p]).then((data_arr) => {
+          let title_list = format_module.title_list(data_arr[0]);
+          html_code = html_code.replace('***known_titles***', title_list);
+          html_code = html_code.replace('***poster_url***', data_arr[1]);
+          res.render('individual', { html_code: html_code});
         });
+
+
       }
 
     }
@@ -148,47 +153,6 @@ router.post('/updateTitle', function (req, res, next) {
   update_promise.then((data) => {
     res.redirect('/individual/' + req.body.tconst);
   })
-});
-
-router.get('/poster', (req, res) => {
-
-  //Emily was in charge of this part
-
-  if (req.query.nconst) {
-      poster.GetPosterFromNameId(req.query.nconst, (err, data) => {
-          if (err) {
-              console.log(err);
-              res.writeHead(404, {
-                  'Content-Type': 'text/html'
-              });
-              res.write('Uh oh - could not find file. Or This movie or person is delete from the database.<br/><a href=\"'+ main_page +'\">click here to go back to main page</a>');
-              res.end();
-          } else {
-              res.writeHead(200, {
-                  'Content': 'text/plain'
-              });
-              res.write(path.join(data.host, data.path));
-              res.end();
-          }
-      });
-  } else if (req.query.tconst) {
-      poster.GetPosterFromTitleId(req.query.tconst, (err, data) => {
-          if (err) {
-              console.log(err);
-              res.writeHead(404, {
-                  'Content-Type': 'text/html'
-              });
-              res.write('Uh oh - could not find file. Or This movie or person is delete from the database.<br/><a href=\"'+ main_page +'\">click here to go back to main page</a>');
-              res.end();
-          } else {
-              res.writeHead(200, {
-                  'Content': 'text/plain'
-              });
-              res.write(path.join(data.host, data.path));
-              res.end();
-          }
-      });
-  }
 });
 
 module.exports = router;
