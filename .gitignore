@@ -1,3 +1,4 @@
 node_modules/
 .idea/
 imdb.sqlite3
+nohup.out
